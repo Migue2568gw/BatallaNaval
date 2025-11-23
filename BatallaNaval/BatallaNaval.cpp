@@ -132,16 +132,25 @@ int main() {
 						indiceJugador2 = indice2;
 						partida.jugador2 = jugadores[indiceJugador2];
 
-						int numeroArchivo = 0;
-						cout << "Seleccione distribucion de barcos (1 a 10): " << endl;
-						cin >> numeroArchivo;
-						if (numeroArchivo < 1 || numeroArchivo > 10) {
-							cout << "Numero de archivo invalido rango de 1 a 10." << endl;
+						int numeroArchivoJugador1 = 0;
+						int numeroArchivoJugador2 = 0;
+
+						cout << "Jugador 1 (" << partida.jugador1.nombre
+							<< ") seleccione distribucion de barcos (1 a 10): " << endl;
+						cin >> numeroArchivoJugador1;
+
+						cout << "Jugador 2 (" << partida.jugador2.nombre
+							<< ") seleccione distribucion de barcos (1 a 10): " << endl;
+						cin >> numeroArchivoJugador2;
+						if (numeroArchivoJugador1 < 1 || numeroArchivoJugador1 > 10 ||
+							numeroArchivoJugador2 < 1 || numeroArchivoJugador2 > 10) {
+
+							cout << "Numero de archivo invalido. Deben estar en el rango de 1 a 10." << endl;
 						}
 						else {
 							inicializarTableros();
-							cargarDistribucionDesdeArchivo(numeroArchivo, 1);
-							cargarDistribucionDesdeArchivo(numeroArchivo, 2);
+							cargarDistribucionDesdeArchivo(numeroArchivoJugador1, 1);
+							cargarDistribucionDesdeArchivo(numeroArchivoJugador2, 2);
 							prepararPartida();
 							jugarPartida();
 						}
@@ -390,56 +399,36 @@ void cargarDistribucionDesdeArchivo(int numeroArchivo, int numeroTablero) {
 }
 
 void mostrarTablerosDeJugador(int numJugador) {
-	cout << "Tablero propio:" << endl;
-	int i = 0;
-	if (numJugador == 1) {
-		while (i < 10) {
-			int j = 0;
-			while (j < 10) {
-				cout << partida.tablero1.oceanoPropio[i][j] << " ";
-				j = j + 1;
-			}
-			cout << endl;
-			i = i + 1;
-		}
+	char columnas[10] = { 'A','B','C','D','E','F','G','H','I','J' };
 
-		cout << "Tablero oponente (disparos realizados):" << endl;
-		i = 0;
-		while (i < 10) {
-			int j = 0;
-			while (j < 10) {
-				cout << partida.tablero1.oceanoOponente[i][j] << " ";
-				j = j + 1;
-			}
-			cout << endl;
-			i = i + 1;
-		}
+	cout << "Tablero oponente (disparos realizados):" << endl;
+
+	cout << "   ";
+	int c = 0;
+	while (c < 10) {
+		cout << columnas[c] << " ";
+		c = c + 1;
 	}
-	else {
-		while (i < 10) {
-			int j = 0;
-			while (j < 10) {
-				cout << partida.tablero2.oceanoPropio[i][j] << " ";
-				j = j + 1;
-			}
-			cout << endl;
-			i = i + 1;
-		}
+	cout << endl;
 
-		cout << "Tablero oponente (disparos realizados):" << endl;
-		i = 0;
-		while (i < 10) {
-			int j = 0;
-			while (j < 10) {
-				cout << partida.tablero2.oceanoOponente[i][j] << " ";
-				j = j + 1;
+	int i = 0;
+	while (i < 10) {
+		cout << " " << i << " ";
+
+		int j = 0;
+		while (j < 10) {
+			if (numJugador == 1) {
+				cout << partida.tablero1.oceanoOponente[i][j] << " ";
 			}
-			cout << endl;
-			i = i + 1;
+			else {
+				cout << partida.tablero2.oceanoOponente[i][j] << " ";
+			}
+			j = j + 1;
 		}
+		cout << endl;
+		i = i + 1;
 	}
 }
-
 
 // Reglas de disparo
 int validarDentroDeTablero(int fila, int columna) {
